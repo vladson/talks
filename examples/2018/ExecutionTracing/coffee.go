@@ -5,6 +5,9 @@ import (
 	"fmt"
 	"runtime/trace"
 	"os"
+	"time"
+	"math"
+	"math/rand"
 )
 
 func main() {
@@ -37,14 +40,19 @@ func main() {
 
 func steamMilk() {
 	trace.Log(context.Background(), "BeforeSteam", "starting steam with params")
+	if rand.Float32() > 0.5 {
+		time.Sleep(1500*time.Millisecond)
+	}
 	fmt.Println("Pshshshsh")
 	trace.Log(context.Background(), "AfterSteam", "steam finished with results")
 }
 
 func extractCoffee() {
+	time.Sleep(256*time.Millisecond)
 	fmt.Println("Bubblbe-buble zzzzzz")
 }
 
 func mixMilkCoffee() {
+	time.Sleep(512*time.Millisecond)
 	fmt.Println("wirple")
 }
