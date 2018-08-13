@@ -1,4 +1,4 @@
-Execution tracing in Go 1.11
+Go 1.11 execution tracing
 Upcoming changes in runtime/trace package
 21:00 13 August 2019
 Tags: golang, runtime, tracing
