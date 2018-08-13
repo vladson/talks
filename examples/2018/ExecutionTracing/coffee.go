@@ -4,17 +4,28 @@ import (
 	"context"
 	"fmt"
 	"runtime/trace"
-	"os"
 	"time"
-	"math"
 	"math/rand"
+	"net/http"
+	_ "net/http/pprof"
+	"log"
+	"strconv"
 )
 
 func main() {
-	trace.Start(os.Stderr)
-	defer trace.Stop()
+	http.Handle("/coffee", http.HandlerFunc(helloHandler))
 
-	orderID := "123e4567-e89b-12d3-a456-426655440000"
+	log.Println(http.ListenAndServe("localhost:8181", http.DefaultServeMux),nil)
+}
+
+func helloHandler(w http.ResponseWriter, r *http.Request) {
+	callWork()
+	w.Write([]byte("Your awesome cold brew!"))
+}
+
+func callWork() {
+
+	orderID := strconv.Itoa(rand.Int())
 
 	ctx, task := trace.NewTask(context.Background(), "makeCappuccino")
 	trace.Log(ctx, "orderID", orderID)
@@ -23,7 +34,17 @@ func main() {
 	espresso := make(chan bool)
 
 	go func() {
-		trace.WithRegion(ctx, "steamMilk", steamMilk)
+		trace.WithRegion(ctx, "steamMilk", func() {
+			trace.Log(ctx, "makingMilk", "starting steam with params")
+			if rand.Float32() > 0.6 {
+				time.Sleep(2000*time.Millisecond)
+				trace.Log(ctx, "makingMilk", "Boiler failure")
+				fmt.Println("Bang")
+			} else {
+				time.Sleep(50*time.Millisecond)
+			}
+			trace.Log(ctx, "makingMilk", "steam finished with results")
+		})
 		milk <- true
 	}()
 	go func() {
@@ -31,28 +52,17 @@ func main() {
 		espresso <- true
 	}()
 	go func() {
-		defer task.End() // When assemble is done, the order is complete.
 		<-espresso
 		<-milk
 		trace.WithRegion(ctx, "mixMilkCoffee", mixMilkCoffee)
+		defer task.End() // When assemble is done, the order is complete.
 	}()
 }
 
-func steamMilk() {
-	trace.Log(context.Background(), "BeforeSteam", "starting steam with params")
-	if rand.Float32() > 0.5 {
-		time.Sleep(1500*time.Millisecond)
-	}
-	fmt.Println("Pshshshsh")
-	trace.Log(context.Background(), "AfterSteam", "steam finished with results")
-}
-
 func extractCoffee() {
-	time.Sleep(256*time.Millisecond)
-	fmt.Println("Bubblbe-buble zzzzzz")
+	time.Sleep(142*time.Millisecond)
 }
 
 func mixMilkCoffee() {
-	time.Sleep(512*time.Millisecond)
-	fmt.Println("wirple")
+	time.Sleep(142*time.Millisecond)
 }

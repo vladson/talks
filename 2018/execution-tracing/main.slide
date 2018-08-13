@@ -1,9 +1,11 @@
-Go 1.11 execution tracing
-21:00 13 August 2018
+Execution tracing in Go 1.11
+Upcoming changes in runtime/trace package
 
-Vladislav Bogomolov
-Server Developer, Gett RnD
-bogomolov@gett.com
+20:15 13 August 2018
+
+Vladislav Bogomolov, Ilya Danilkin
+Backend Developers, Gett RnD
+bogomolov@gett.com, danilkin@gett.com
 https://engineering.gett.com/
 
 * What is tracing?
@@ -157,6 +159,13 @@ A task can end in a different goroutine than the goroutine it started at:
         defer task.End()
         trace.WithRegion(ctx, remainingWork)
     }
+    
+* What's now?
+
+Lets try to analyze new trace
+.image images/newStartPage.png 230 _
+Obvious changes.
+
 
 * Demo time!
 
