@@ -1,13 +1,7 @@
 Execution tracing in Go 1.11
 Upcoming changes in runtime/trace package
-21:00 13 August 2019
+19:00 14 May 2018
 Tags: golang, runtime, tracing
-
-Vladislav Bogomolov
-Server Developer, Gett RnD
-bogomolov@gett.com
-https://engineering.gett.com/
-@vladson
 
 Ilya Danilkin
 Server Developer, Gett RnD
