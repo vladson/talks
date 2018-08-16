@@ -173,6 +173,15 @@ Obvious changes.
 
 .image images/flying.png
 
+* Source code
+
+.code code/old_coffee.go
+
+* Source code
+
+.code code/coffee.go
+
+
 * Current limitations
 
 .background images/background.png
