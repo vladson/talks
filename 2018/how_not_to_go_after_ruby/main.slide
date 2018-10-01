@@ -8,27 +8,22 @@ https://engineering.gett.com/
 http://github.com/vladson
 @vladson4ik
 
-* Why Go?
-
-.image images/gopher_sneaking.png _ 300
-.caption гофер (кродеться)
-.background images/background.png
-
 * Common Ruby way
 
 - convention over configuration
 - easy to write, easy to read
 - lots of code, dictate of Rails
 
+.image images/redTrain.jpg 300 _
+
 .background images/background.png  
 
 * Common Go way?
-
-
 .background images/background.png
 
-- explicit over implicit
-- simple is better that complex
+.image images/gopher_sneaking.png _ 300
+.caption гофер (кродеться)
+
 
 * Questions and decisions to make
 
@@ -74,6 +69,9 @@ Don't do it!
 
 - GoWay fest 2018 - Kat Zién: [[https://github.com/katzien/talks/blob/master/how-do-you-structure-your-go-apps/gowayfest2.0-2018-09-28/slides.pdf][How do you structure your Go apps?]]
 
+* Database
+.background images/background.png
+
 * What ORM should I use if any?
 
 .background images/background.png
@@ -98,7 +96,7 @@ In many cases you need no ORM, just _"database/sql"_ package
 
 .code code/plain_sql.go  /START OMIT/,/END OMIT/
 
-* Existing ORMS
+* Existing ORMs
 
 .background images/background.png
 - [[https://github.com/jinzhu/gorm][Gorm]]
@@ -133,42 +131,82 @@ problems:
  CREATE INDEX CONCURRENTLY idx ON  table_name (field0, field1);
  COMMIT;
  
-* How to handle Exceptions?
+* Exceptions
 
 .background images/background.png
-
-* What to do with logging?  
-
-.background images/background.png
-
-* Should I use any framework?
-
-.background images/background.png
-
-* 
-
-.background images/background.png
-
-
-* Exceptions?
-Обработка ошибок. Явно, часть логики, не эксепшены.
-
-* Логирование
-Логирование. Ну можно, конечно. Структура. Поля. Пробрасывать дальше.
-
-* Тестирование
-
-- rspec?
-- minitest?
-
- рспек? Простые, чистые тесты. Которые понятно как гонять. 
-
- - 
-* масса кода который порождает массу кода
-
-пример из Gls 
-
-* использовать неявные неэкосистемные решения
  
+* Exceptions in Ruby
 
+.background images/background.png
+
+.image images/rubyExceptions.png _ 300
+
+ begin do
+   ...
+ rescue ServiceFailError => e
+   ...
+ end
+ 
+* Mistakes for errors in Go
+
+.background images/background.png
+
+- use _defer_— _Panic_ — _recover_ as exception flow control
+
+.code code/panic.go  /START OMIT/,/END OMIT/
+
+- create a set of custom errors.
+
+* Better error handling approach
+
+.background images/background.png
+
+Always use [[https://github.com/pkg/errors][pkg/errors]]
+
+.code code/errors.go /START OMIT/,/END OMIT/
+
+- preserves the initial cause
+- easy to follow through code 
+
+* Testing
+
+.background images/background.png
+
+* Testing in Ruby
+.background images/background.png
+
+no brainer — *rspec* or *minitest*
+
+Should we end up with something like *rspec*?
+
+* Testing in Go
+.background images/background.png
+
+[[https://golang.org/pkg/testing/][pkg/testing]]
+- golang native 
+- benchmarks
+- every test is runnable
+
+ // test 
+ func TestTimeConsuming(t *testing.T) { ...
+ 
+ // benchmark
+ func BenchmarkHello(b *testing.B) {
+ 
+[[https://github.com/stretchr/testify][testify]]
+
+
+[[https://onsi.github.io/ginkgo/][Ginkgo]]
+pros: BDD
+cons: 
+- not in a _Go way_
+- only suites accept (*testing.T)
+
+* Summary
+.background images/background.png
+
+* Summary
+.background images/background.png
+
+Don't
  
