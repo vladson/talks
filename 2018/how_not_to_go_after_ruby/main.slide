@@ -1,5 +1,5 @@
 How not to Ruby on Go
-06 October 2018
+01 October 2018
 
 Vladislav Bogomolov
 Backend Developer, Gett RnD
@@ -29,28 +29,37 @@ http://github.com/vladson
 
 .background images/background.png
 
-- How to split responsibilities?
+- Should I use any framework?
 - How to structure your app
+- How to split responsibilities?
 - What ORM should I use if any?
 - How to handle Exceptions?
 - What to do with logging?  
-- Should I use any framework?
+
+* Frameworks
+.background images/background.png
+
+* Frameworks
+.background images/background.png
+
+ Beego, Martiny, Revel
+ 
+ Why not?
+ - possibly wrong conceptions
+ - possible problems with structure
+ - less understanding of the Go way  
 
 * How to split responsibilities?
 
 .background images/background.png
 
-Nobody knows, btw, but common practices present.
-
-How it's done in Ruby?
 .image images/abstractionsEverywhere.jpg _ 600
 
-* How to split responsibilities?
+* How not to split responsibilities?
 
 .background images/background.png
 
 .code code/package.go  /START OMIT/,/END OMIT/
-Don't do it!
 
 - keep track of packages
 - Your code should reside in corresponding packages
@@ -208,5 +217,7 @@ cons:
 * Summary
 .background images/background.png
 
-Don't
+- Explicit is better than implicit
+- Keep things simple
+- Use existing solutions and be compatible with standard library
  
