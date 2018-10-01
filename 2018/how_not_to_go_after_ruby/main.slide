@@ -70,7 +70,7 @@ Don't do it!
 .background images/background.png
 
 - MVC with corresponding layered structure is not usefull for Go
-- DDD
+- DDD rules
 
 - GoWay fest 2018 - Kat Zién: [[https://github.com/katzien/talks/blob/master/how-do-you-structure-your-go-apps/gowayfest2.0-2018-09-28/slides.pdf][How do you structure your Go apps?]]
 
@@ -82,14 +82,56 @@ How it's done in Ruby?
  
  class User < Activerecord::Base
  ...
+ User.find
+ User.save
+ ...
 
-- lots of encapsulation
 - lots of implicit stuff
-- lots of unneeded conversions
+- lots of abstractions
+- mix of responsibility
 
-* ORMs in Go?
+* Do you need them in Go?
+
+.background images/background.png
+
+In many cases you need no ORM, just _"database/sql"_ package
+
+.code code/plain_sql.go  /START OMIT/,/END OMIT/
+
+* Existing ORMS
+
+.background images/background.png
+- [[https://github.com/jinzhu/gorm][Gorm]]
+Activerecord like ORM,
+problems:
+- mix of responsibility
+- unpredictable behaviour
+- usage of _interface{}_ values
+- no migrations
+
+- [[https://github.com/go-reform/reform][Reform]] 
+Code-generation based approach, thus provides usable interface. Data Mapper pattern. 
+
+problems:
+- mostly no problems
+- unless you have some
+- no migrations 
 
 
+* Migrations
+
+.background images/background.png
+- No common techniques
+
+- In Gett we use Swan, based on [[https://bitbucket.org/liamstask/goose] Goose]
+
+1. File based migrations
+2. Dangerous migrations warning
+3. Support concurrent indices 
+
+ BEGIN;
+ CREATE INDEX CONCURRENTLY idx ON  table_name (field0, field1);
+ COMMIT;
  
 * How to handle Exceptions?
 
