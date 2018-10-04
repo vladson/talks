@@ -8,25 +8,82 @@ https://engineering.gett.com/
 http://github.com/vladson
 @vladson4ik
 
-* Common Ruby way
+: 10 лет знаком с руби, 8 лет продакшн опыта. Backend. 
+: Было желание строго-типизированных языков
 
-- convention over configuration
-- easy to write, easy to read
-- lots of code, dictate of Rails
+* Gett
+.background images/background.png
+
+Monolith drawbacks:
+- scalability
+- support
+- entanglement => new features development
+
+.video images/piglets.webm video/mp4 _ 300
+: Проблемы с производительностью, и главное с поддержкой и развитием новых фич.
+
+* Gett SOA
+.background images/background.png
+
+*Pros:*
+- allows Continuous Delivery / Deployment - almost the only way to go
+- support R&D growth 
+- ability to Scale / Improve Availability of specific parts independently
+- allow Multiple Technology Stack work side by Side
+
+*Cons:*
+- development & operational overhead
+- network overhead
+- more points of failure
+
+: на SOA перешли в 2014, Node, ROR, Go fixed 2016
+
+* Gett SOA
+.background images/background.png
+
+- services are built around business process
+- SRP single responsibility principle
+size guidelines:
+- 200 < LOC < 5000
+- easy to rewrite in a month
+
+*State:*
+- first service on Node.js in 2014
+- several other on ROR
+- now more than 70
+
+* Gett Go
+.background images/background.png
+2015 First service on Go — locations service.
+
+.image images/gonode.png _ 700
+
+Late 2016 - Golang as a language of choice
+
+* Ruby
+.background images/background.png  
+
+- interpretable
+- object oriented
+- dynamically typed
+- dsl-oriented
 
 .image images/redTrain.jpg 300 _
 
-.background images/background.png  
-
-* Common Go way?
+* Golang
 .background images/background.png
 
-.image images/gopher_sneaking.png _ 300
-.caption гофер (кродеться)
+- compilable
+- static
+- structured
+- strong typed
+- embedded concurrency support
 
+ go YourAwesomeAsyncFunc(c *Context, payload map[string][string] )
+ 
+.image images/gopher_sneaking.png _ 300
 
 * Questions and decisions to make
-
 .background images/background.png
 
 - Should I use any framework?
@@ -34,7 +91,18 @@ http://github.com/vladson
 - How to split responsibilities?
 - What ORM should I use if any?
 - How to handle Exceptions?
-- What to do with logging?  
+- How to deal with testing?
+  
+* What issues did we encountered?
+
+- Strange to start thinking in Go paradigm
+- Bad code leads to worse code
+- Codebase becomes incompatible with libraries
+- Familiar approach result in messy code
+: functions not classes, packages not 
+: Написание кода на Go непонятно как. 
+: Чем больше велосипедов -  тем больше велосипедов
+: 
 
 * Frameworks
 .background images/background.png
@@ -42,9 +110,9 @@ http://github.com/vladson
 * Frameworks
 .background images/background.png
 
- Beego, Martiny, Revel
+Beego, Martiny, Revel ...
  
- Why not?
+Why not?
  - possibly wrong conceptions
  - possible problems with structure
  - less understanding of the Go way  
