@@ -1,5 +1,4 @@
 package dao
-
 import (
 "errors"
 "fmt"
@@ -13,8 +12,16 @@ import (
 	"github.com/gtforge/rides_api/models/location"
 )
 // START OMIT
+package dao
+
+func Find(uuid uuid.UUID) User, error {}
+
+func FindLocations(uuid uuid.UUID) []location.Location, error { ... }
+.
+.
+.
+
 type ldao struct{}
 
-func (t *ldao) FindLocations(uuid uuid.UUID) []location.Location {
+func (t *ldao) Find(uuid uuid.UUID) []location.Location { ... }
 // END OMIT
-}

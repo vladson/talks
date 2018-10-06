@@ -4,15 +4,17 @@ import (
 	"database/sql"
 	"log"
 	"fmt"
+	"os/user"
 )
 // START OMIT
-func Get(age int)  {
+func Get(name string, age int)  {
 	var db *sql.DB
-	rows, _ := db.Query("SELECT name FROM users WHERE age=?", age)
+	rows, _ := db.Query("SELECT name, num, age " +
+		"FROM users WHERE age=? AND name = ?", age, name)
 	defer rows.Close()
 	for rows.Next() {
-		var name string
-		err := rows.Scan(&name)
+		var user users.User
+		err := rows.Scan(&user.Name, &user.Num, &user.Age)
 // END OMIT
 		if err != nil {
 			log.Fatal(err)
