@@ -8,9 +8,6 @@ https://engineering.gett.com/
 http://github.com/vladson
 @vladson4ik
 
-: 10 лет знаком с руби, 8 лет продакшн опыта. Backend. 
-: Было желание строго-типизированных языков
-
 * Gett
 .background images/background.png
 
@@ -21,10 +18,6 @@ Monolith drawbacks:
 
 .image images/monolith.jpeg _ 600
 
-: Сначала рельса, потом уже выросла в монолит
-: Проблемы с производительностью, и главное с поддержкой и развитием новых фич.
-: все переплетено
-: легко стартовать, но нужны усилия чтобы устраниить тех долг
 
 * Gett SOA
 .background images/background.png
@@ -35,15 +28,11 @@ Monolith drawbacks:
 - ability to scale or improve availability of specific parts independently
 - allow multiple technology stack work side by side
 
-: almost the only way to go
-: Разработка на 2 страны
-: Безопасно деплоить
 *Cons:*
 - development & operational overhead
 - network overhead
 - more points of failure
 
-: на SOA перешли в 2014, Node, ROR, Go fixed 2016
 
 * Gett SOA
 .background images/background.png
@@ -68,7 +57,6 @@ Monolith drawbacks:
 
 Late 2016 - Golang as a language of choice
 
-: Решение Арзитекторы, вицепрезидент по разработке и форум ведущих разраотчиков
 
 * Ruby
 .background images/background.png  
@@ -80,9 +68,6 @@ Late 2016 - Golang as a language of choice
 
 .image images/redTrain.jpg 300 _
 
-: rails привычка разработки в парадигме Rails
-: rails все в рельсу
-
 * Golang
 .background images/background.png
 
@@ -92,9 +77,6 @@ Late 2016 - Golang as a language of choice
 - no OOP in common way
 
 .image images/gettGopher.png _ 300
-: кто на гошке?
-: дальше я покажу, как основные, глубинные различия в языках привели к тем проблемам, с которыми мы столкнулись
-: основы философии Golang быстрая компиляция, быстрый рантайм, высокая эффективность
 
 * Golang
 .background images/background.png
@@ -136,21 +118,11 @@ different directories, but same package
 - Ginkgo for testing
 - shared library of Gett related or common code
 
-: пытались сделать переход от рельс к Golang безболезненным
-: были рельсы остались рельсы, казалось бы что могло пойти не так?
-: копирует не только хоршие но и концептуальные ошибки 
-
 * What issues did we encountered?
 
 - hard to start thinking in Go paradigm
 - bad code leads to worse code
 - familiar approach result in messy code
-
-: functions not classes, packages not 
-: Написание кода на Go непонятно как. 
-: Чем больше велосипедов -  тем больше велосипедов
-: Vendor lock
-
 
 * Frameworks
 .background images/background.png
@@ -163,7 +135,6 @@ Beego is a Rails for Go
 
 new project initialization
 .image  images/newBeeApp.png _ 800
-: Beego, Martiny, Revel, Gin
 
 * Run
 .background images/background.png
@@ -194,8 +165,6 @@ new project initialization
 Init functions are called on package import 
 Overuse is a bad practice: impairs readability, makes implicit changes.
 
-: попытка использования init в качетсве инишалайзеров
-
 * Problems
 - dsl like, magic based behaviour
 - overuse of *init()* magic
@@ -206,8 +175,6 @@ Overuse is a bad practice: impairs readability, makes implicit changes.
 * How to fix it? 
 .background images/background.png
 .image images/house-of-cards.jpg 500 _
-
-: Для этого надо разобраться с некоторыми аспектами
 
 * How not to split responsibilities?
 
@@ -243,8 +210,6 @@ Messy code and empty structs
 - keep track of packages
 - Your code should reside in corresponding packages
 - don't try to emulate classes where you don't need them
-
-: попытка 
 
  
 * DDD
@@ -316,9 +281,6 @@ And then query it like this
  
  db.Create(&user)
 
-: в руби классы на данные 
-: в го структуры на структуры?
-
 * What's wrong?
 
 - we have no control over SQL
@@ -363,8 +325,6 @@ problems:
 - unless you have some
 - no migrations
 
-: reform code generated approach
- 
 - [[https://github.com/jinzhu/gorm][Gorm]]
 Activerecord like ORM,
 problems:
@@ -413,7 +373,6 @@ Go way of errors
    if err != nil {
      // handle your error
 
-: многие ругают Го за эксепшены, но если ошибка - часть логики, но 
 
 * Better error handling approach
 
