@@ -210,18 +210,6 @@ Overuse is a bad practice: impairs readability, makes implicit changes.
 : Для этого надо разобраться с некоторыми аспектами
 
 * How not to split responsibilities?
-.background images/background.png
-
-Messy code and empty structs
-
-.code code/package.go  /START OMIT/,/END OMIT/
-
-- keep track of packages
-- Your code should reside in corresponding packages
-
-: попытка 
-
-* How not to split responsibilities?
 
 Circular dependencies
 
@@ -244,6 +232,20 @@ Circular dependencies
  func Post(p *models.Post) error {
  
  }
+
+* How not to split responsibilities?
+.background images/background.png
+
+Messy code and empty structs
+
+.code code/package.go  /START OMIT/,/END OMIT/
+
+- keep track of packages
+- Your code should reside in corresponding packages
+- don't try to emulate classes where you don't need them
+
+: попытка 
+
  
 * DDD
 .background images/background.png
