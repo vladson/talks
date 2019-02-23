@@ -1,0 +1,257 @@
+Унификация Healthcheck в SOA
+26 February 2019
+
+Vladislav Bogomolov
+Backend Developer, Gett RnD
+bogomolov@gett.com
+https://engineering.gett.com/
+http://github.com/vladson
+@vladson4ik
+
+* Me
+
+- 10 years of development
+- 1.5 year Go
+- 1.5 year Gett
+
+.image images/vladson.jpg _ 500
+
+* Still Alive
+.background images/background.png
+
+.image images/cubeHeart.jpg _ 600
+
+* Gett
+.background images/background.png
+
+- more that 1500 services
+- kubernetes introduced 1 year ago
+- more that 120 developers, over 10 backend teams
+- some services are transferred from team to team
+
+* Kubernetes
+.background images/background.png
+
+.image images/Kubernetes_small_logo.png _ 300
+
+: Наиболее хайповый фреймворк для контейнерной оркестровки
+: автоматизации развёртывания, масштабирования и управления контейнеризированными приложениями.
+: Поддерживает основные технологии контейнеризации, включая Docker, rkt
+
+
+* Pod
+.background images/background.png
+
+.image images/pot.jpeg _ 400
+
+* Pod
+.background images/background.png
+
+.image images/pods.svg _ 850
+
+- 1 or more containers
+- Distinct IP
+- shared volume
+
+: Каждый под состоит из одного (или больше) контейнеризированного приложения, обладает своим ip, может содержать шеред раздел.
+
+* Nodes
+.background images/background.png
+
+.image images/k8s2nodes.png _ 500 
+
+- K8s manages one or more nodes
+- decides which pods to run on which node
+- node (kubelet) checks status of pods and restarts them if needed
+
+* Alive?
+.background images/background.png
+
+.image images/shrödingerscat.png _ 400
+
+What happens if something goes wrong?
+
+: Приложение может крешануться, что дальше?
+
+* Crash
+.background images/background.png
+
+.image images/warningSigns.jpg _ 600
+
+- process crashed
+- liveness check failed
+
+* Lifecycle
+.background images/background.png
+
+.image images/portalORvalve.jpg 400 _
+
+Regardless of cause, the container will be restarted
+
+* Readiness and Liveness probes
+.background images/background.png
+
+.image images/parkerSolarProbe.jpg _ 600
+
+: defined on containers
+: used by kubelet on each pods
+
+* Readiness
+.background images/background.png
+
+- should pass only when app is ready to accept traffic
+- may be used to stop accepting traffic on specific pod
+
+* Liveness
+.background images/background.png
+
+- should indicate that the app is doing well
+- may trigger termination and restart of the pod
+
+* Types of check
+.background images/background.png
+
+- Command
+- TCP check
+- HTTP(S) check
+
+:  
+
+* Command
+.background images/background.png
+
+.code code/liveness_file.yml
+
+* TCP
+.background images/background.png
+
+.code code/readiness_tcp.yml
+
+* HTTP
+.background images/background.png
+
+.code code/liveness_http.yml
+
+: best possible for web services
+: Place for demo if time and place
+
+* Gett
+.background images/background.png
+
+* Gett
+.background images/background.png
+
+- 1 year on k8s
+- previously used AWS ELB
+- decided to reuse existing endpoint
+
+* Alive
+.background images/background.png
+
+.image images/areaAlive.png 300 _
+
+- http
+- works for ruby and go services
+- used for reporting
+
+* How was it done?
+.background images/background.png
+
+- part of the skeleton, predefined controller
+- part of the library included by default
+
+* Like this
+
+.code code/ssralive.go
+
+
+* Or like this
+
+.code code/alive.json
+
+* But mostly like this
+
+ import _ "github.com/gtforge/services_common_go/gett-ops/gett-beego"
+ ...
+
+* Purpose of the solution
+
+- readiness / liveness checks
+- report when the service was deployed
+- report which commit is used
+
+* Problem?
+.background images/background.png
+
+- no understanding what's going on
+- implementation is taken for granted
+- sometimes healthcheck is checking nothing
+- existing solution where highly coupled to deprecated parts of the stack
+
+: beego, services_common
+
+* Solution
+.background images/background.png
+
+- standalone framework agnostic library 
+- support existing standard (checks and reports)
+- require minimal configuration 
+- common checks library
+- add project specific checks on the fly in easy way.
+
+: ссылки на существующие будут в конце
+
+* Checks format
+.background images/background.png
+
+_Interface_
+ type Checker interface {
+   Ping(ctx context.Context) (map[string]interface(), error) 
+ }
+
+_Function_
+  type Pinger func(ctx context.Context) (map[string]interface{}, error)
+  
+: было выбрано для упрощения инициализации
+
+* Healthcheck
+.background images/background.png
+
+.code code/healthcheck.go  /START OMIT/,/END OMIT/
+
+* Implemented Pingers
+.background images/background.png
+
+- Default Info reporter
+- Git Branch reporter
+
+.code code/aliveNew.json 
+
+* Slide
+.background images/background.png
+
+This is crap
+
+* Slide
+.background images/background.png
+
+This is crap
+
+* Slide
+.background images/background.png
+
+This is crap
+
+* Slide
+.background images/background.png
+
+This is crap
+
+* Slide
+.background images/background.png
+
+This is crap
+ 	
+* Questions? Links.
+.background images/background.png
+
