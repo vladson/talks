@@ -10,7 +10,7 @@ http://github.com/vladson
 
 * Me
 
-- 10 years of development
+- 10 years of development experience
 - 1.5 year Go
 - 1.5 year Gett
 
@@ -227,31 +227,131 @@ _Function_
 
 .code code/aliveNew.json 
 
-* Slide
+: ldflags
+
+* Failed variable linking
 .background images/background.png
 
-This is crap
+Build:
+  
+  go build -ldflags "-X github.com/gtforge/go-healthcheck.GitBranch=`git rev-parse --abbrev-ref HEAD`"
+  
+.code code/aliveFailed.json
 
-* Slide
+No warning from _go tool link_
+
+
+* Database
 .background images/background.png
 
-This is crap
+  healthcheck.MakeDbPinger(db, "main_db")
+  
+.code code/dbpinger.go  /START OMIT/,/END OMIT/
 
-* Slide
+
+All other are implemented with a 
+
+* Usage
 .background images/background.png
 
-This is crap
+.code -edit code/healthcheckUsage.go  /START OMIT/,/END OMIT/
 
-* Slide
+* Remember TDD: default failing check
 .background images/background.png
 
-This is crap
+- Default failing check
+    
+    return map[string]interface{}{
+               "implement_checks": []string{
+                "Make sure buildstamp and git variables linking",
+                "Add DB, Redis, MQ pingers if useful"
+               },
+            }, 
 
-* Slide
+- Check that fails if linking failed
+    
+    if GitBranch == "" {
+        return nil, errors.New("GitBranch not initialized")
+    }
+    return func(_ context.Context) (map[string]interface{}, error) {
+        return map[string]interface{}{
+            "git_branch": GitBranch,
+        }, nil
+    }, nil
+
+* Further improvements
 .background images/background.png
 
-This is crap
+- async checks
+- possible integration with metrics gathering
  	
+* Dangers of readiness and liveness overuse
+.background images/background.png
+
+.image images/cubeInTheHead.jpg _ 400
+
+Improperly configured probes may impair your service 
+
+* Readiness
+.background images/background.png
+    
+    func() error {
+        if cache.Healthy {
+            return nil
+        }
+        return errors.New("Cache failed")
+    }
+     	
+
+* Readiness
+.background images/background.png
+
+- if startup related resource is unavailable — all the pods will stop receiving traffic
+- proper usecase
+cache failed -> unready pod -> refetch cache -> ready pod
+
+
+ 	
+* Liveness
+.background images/background.png
+
+    func() error {
+        conn, err := net.DialTimeout("tcp", addr, timeout)
+        if err != nil {
+            return err
+        }
+        return conn.Close()
+    }
+
+ 	
+* Liveness
+.background images/background.png
+    
+    - only pod related errors
+    - those that can be fixed by restart
+	
+* Existing libraries
+
+- [[https://github.com/InVisionApp/go-health][go-health by InVisionApp]]
+: powerful, interface based
+- [[https://github.com/heptiolabs/healthcheck][healthcheck by Heptiolabs]]
+: function based with predefined 
+
+* Summary
+.background images/background.png
+
+- liveness/readiness should reflect application state
+- be careful with external dependencies inflicting _dead_ state
+- choose library or write your own
+- don't rely on defaults, you can forget to reflect useful state
+ 	
+
 * Questions? Links.
 .background images/background.png
 
+- [[https://blog.colinbreck.com/kubernetes-liveness-and-readiness-probes-how-to-avoid-shooting-yourself-in-the-foot/][Liveness and Readiness Probes: How to Avoid Shooting Yourself in the Foot]]
+- [[https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/][Kubernetes: how to configure liveness and readiness probes]]
+
+All Portal ™ images and referencies are courtesy of Valve inc.
+
+.image images/still_alive_cake.png
