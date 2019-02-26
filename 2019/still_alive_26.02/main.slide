@@ -24,9 +24,9 @@ http://github.com/vladson
 * Gett
 .background images/background.png
 
-- more that 1500 services
+- more that 150 services
 - kubernetes introduced 1 year ago
-- more that 120 developers, over 10 backend teams
+- over 10 backend teams
 - some services are transferred from team to team
 
 * Kubernetes
@@ -38,12 +38,15 @@ http://github.com/vladson
 : автоматизации развёртывания, масштабирования и управления контейнеризированными приложениями.
 : Поддерживает основные технологии контейнеризации, включая Docker, rkt
 
-
-* Pod
+* Nodes
 .background images/background.png
 
-.image images/pot.jpeg _ 400
+.image images/k8s2nodes.png _ 500 
 
+- K8s manages one or more nodes
+- decides which pods to run on which node
+- node (kubelet) checks status of pods and restarts them if needed
+    
 * Pod
 .background images/background.png
 
@@ -55,15 +58,6 @@ http://github.com/vladson
 
 : Каждый под состоит из одного (или больше) контейнеризированного приложения, обладает своим ip, может содержать шеред раздел.
 
-* Nodes
-.background images/background.png
-
-.image images/k8s2nodes.png _ 500 
-
-- K8s manages one or more nodes
-- decides which pods to run on which node
-- node (kubelet) checks status of pods and restarts them if needed
-
 * Alive?
 .background images/background.png
 
@@ -73,20 +67,13 @@ What happens if something goes wrong?
 
 : Приложение может крешануться, что дальше?
 
-* Crash
-.background images/background.png
-
-.image images/warningSigns.jpg _ 600
-
-- process crashed
-- liveness check failed
-
-* Lifecycle
+* Crash - Restart
 .background images/background.png
 
 .image images/portalORvalve.jpg 400 _
 
-Regardless of cause, the container will be restarted
+- process crashed
+- liveness check failed
 
 * Readiness and Liveness probes
 .background images/background.png
@@ -134,6 +121,13 @@ Regardless of cause, the container will be restarted
 
 : best possible for web services
 : Place for demo if time and place
+
+* Lifecycle
+.background images/background.png
+
+Pending -> Ready -> Unready -> Ready -> Unhealthy
+
+.image images/portallFall.gif
 
 * Gett
 .background images/background.png
@@ -249,14 +243,14 @@ No warning from _go tool link_
 .code code/dbpinger.go  /START OMIT/,/END OMIT/
 
 
-All other are implemented with a 
+All the others are implemented with similar approach
 
 * Usage
 .background images/background.png
 
 .code -edit code/healthcheckUsage.go  /START OMIT/,/END OMIT/
 
-* Remember TDD: default failing check
+* Remember TDD: make it failing first
 .background images/background.png
 
 - Default failing check
@@ -266,7 +260,7 @@ All other are implemented with a
                 "Make sure buildstamp and git variables linking",
                 "Add DB, Redis, MQ pingers if useful"
                },
-            }, 
+            }, errors.New("Add checks!")
 
 - Check that fails if linking failed
     
@@ -283,14 +277,20 @@ All other are implemented with a
 .background images/background.png
 
 - async checks
-- possible integration with metrics gathering
- 	
+- pg check
+- rmq check
+
 * Dangers of readiness and liveness overuse
 .background images/background.png
 
 .image images/cubeInTheHead.jpg _ 400
 
-Improperly configured probes may impair your service 
+* Dangers
+
+- configuration is not reflecting state
+    - web server for probes is different from main application's
+- external dependencies checked
+    - thirdparties, that you can not control 
 
 * Readiness
 .background images/background.png
@@ -327,15 +327,19 @@ cache failed -> unready pod -> refetch cache -> ready pod
 * Liveness
 .background images/background.png
     
-    - only pod related errors
-    - those that can be fixed by restart
+- only pod related errors
+- those that can be fixed by restart
 	
 * Existing libraries
 
 - [[https://github.com/InVisionApp/go-health][go-health by InVisionApp]]
 : powerful, interface based
 - [[https://github.com/heptiolabs/healthcheck][healthcheck by Heptiolabs]]
-: function based with predefined 
+: function based with predefined
+: metrics can be gathered 
+
+.image images/2guns.jpg _ 300
+.caption http://jackcgd.blogspot.com/2012/09/
 
 * Summary
 .background images/background.png
@@ -344,6 +348,7 @@ cache failed -> unready pod -> refetch cache -> ready pod
 - be careful with external dependencies inflicting _dead_ state
 - choose library or write your own
 - don't rely on defaults, you can forget to reflect useful state
+- consider default failing for your company's scaffold project
  	
 
 * Questions? Links.
@@ -352,6 +357,6 @@ cache failed -> unready pod -> refetch cache -> ready pod
 - [[https://blog.colinbreck.com/kubernetes-liveness-and-readiness-probes-how-to-avoid-shooting-yourself-in-the-foot/][Liveness and Readiness Probes: How to Avoid Shooting Yourself in the Foot]]
 - [[https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/][Kubernetes: how to configure liveness and readiness probes]]
 
-All Portal ™ images and referencies are courtesy of Valve inc.
 
 .image images/still_alive_cake.png
+.caption All Portal ™ images and referencies are courtesy of Valve inc.

@@ -17,7 +17,7 @@ func main() {
 	//}
 	cache := cache.InitCache()
 	hc := healthcheck.NewHealthCheck(
-		healthcheck.MakeDbPinger(db, "master"), // The built in handler to check DB connection
+		healthcheck.MakeDbPinger(db, "master"),
 	)
 
 	handler := healthcheck.MakeHealthcheckHandler(hc)
